@@ -6,7 +6,7 @@
     <title>EdyhinzGames</title>
     <style>
         body {
-            background-color: red;
+            background-color: #ff4d4d;
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
@@ -17,16 +17,27 @@
         }
         .game-list {
             margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .game-item {
             background-color: white;
             color: black;
-            padding: 10px;
+            padding: 20px;
             margin: 10px;
             display: inline-block;
-            border-radius: 5px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
+            width: 200px;
+            text-align: center;
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -34,9 +45,21 @@
     <h1>EdyhinzGames</h1>
     <p>Juegos desbloqueados para jugar en línea.</p>
     <div class="game-list">
-        <a class="game-item" href="https://example.com/game1" target="_blank">Juego 1</a>
-        <a class="game-item" href="https://example.com/game2" target="_blank">Juego 2</a>
-        <a class="game-item" href="https://example.com/game3" target="_blank">Juego 3</a>
+        <a class="game-item" href="#game1" onclick="showGame('game1')">Juego 1</a>
+        <a class="game-item" href="#game2" onclick="showGame('game2')">Juego 2</a>
+        <a class="game-item" href="#game3" onclick="showGame('game3')">Juego 3</a>
     </div>
+    <iframe id="gameFrame"></iframe>
+    
+    <script>
+        function showGame(gameId) {
+            const games = {
+                'game1': 'data:text/html,<html><body><h2>Juego 1</h2><p>Diviértete aquí</p></body></html>',
+                'game2': 'data:text/html,<html><body><h2>Juego 2</h2><p>Más diversión aquí</p></body></html>',
+                'game3': 'data:text/html,<html><body><h2>Juego 3</h2><p>Juega sin parar</p></body></html>'
+            };
+            document.getElementById('gameFrame').src = games[gameId];
+        }
+    </script>
 </body>
 </html>

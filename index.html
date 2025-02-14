@@ -22,6 +22,15 @@
         h1 {
             font-size: 3em;
         }
+        #searchBar {
+            width: 80%;
+            padding: 10px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
         .game-list {
             margin-top: 20px;
             display: flex;
@@ -31,19 +40,26 @@
         .game-item {
             background-color: white;
             color: black;
-            padding: 20px;
+            padding: 10px;
             margin: 10px;
-            display: inline-block;
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
             width: 200px;
             text-align: center;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
         }
         iframe {
-            width: 100%;
-            height: 500px;
+            width: 800px;
+            height: 600px;
             border: none;
             margin-top: 20px;
         }
@@ -52,31 +68,46 @@
 <body>
     <h1>EdyhinzGames</h1>
     <p>Juegos desbloqueados para jugar en línea.</p>
+    <input type="text" id="searchBar" placeholder="Buscar un juego..." onkeyup="searchGames()">
     <div class="game-list" id="gamesContainer"></div>
     <iframe id="gameFrame"></iframe>
     
     <script>
-        const games = {
-            'game1': 'data:text/html,<html><body><h2>Juego 1</h2><p>Diviértete aquí</p></body></html>',
-            'game2': 'data:text/html,<html><body><h2>Juego 2</h2><p>Más diversión aquí</p></body></html>',
-            'game3': 'data:text/html,<html><body><h2>Juego 3</h2><p>Juega sin parar</p></body></html>'
-        };
+        const games = [
+            { id: 'game1', name: 'Juego 1', url: 'https://scratch.mit.edu/projects/10128407/embed/', img: 'https://via.placeholder.com/200' },
+            { id: 'game2', name: 'Juego 2', url: 'https://scratch.mit.edu/projects/10899407/embed/', img: 'https://via.placeholder.com/200' },
+            { id: 'game3', name: 'Juego 3', url: 'https://scratch.mit.edu/projects/11858007/embed/', img: 'https://via.placeholder.com/200' },
+            { id: 'game4', name: 'Juego 4', url: 'https://scratch.mit.edu/projects/12892007/embed/', img: 'https://via.placeholder.com/200' },
+            { id: 'game5', name: 'Juego 5', url: 'https://scratch.mit.edu/projects/13865007/embed/', img: 'https://via.placeholder.com/200' }
+        ];
         
-        for (let i = 4; i <= 30; i++) {
-            games[`game${i}`] = `data:text/html,<html><body><h2>Juego ${i}</h2><p>Diviértete aquí</p></body></html>`;
+        function showGame(url) {
+            document.getElementById('gameFrame').src = url;
         }
         
-        function showGame(gameId) {
-            document.getElementById('gameFrame').src = games[gameId];
+        function searchGames() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            document.querySelectorAll('.game-item').forEach(item => {
+                item.style.display = item.getAttribute('data-name').toLowerCase().includes(query) ? 'block' : 'none';
+            });
         }
         
         const gamesContainer = document.getElementById('gamesContainer');
-        Object.keys(games).forEach(gameId => {
-            const gameLink = document.createElement('a');
-            gameLink.className = 'game-item';
-            gameLink.textContent = gameId.replace('game', 'Juego ');
-            gameLink.onclick = () => showGame(gameId);
-            gamesContainer.appendChild(gameLink);
+        games.forEach(game => {
+            const gameDiv = document.createElement('div');
+            gameDiv.className = 'game-item';
+            gameDiv.setAttribute('data-name', game.name);
+            gameDiv.onclick = () => showGame(game.url);
+            
+            const gameImg = document.createElement('img');
+            gameImg.src = game.img;
+            
+            const gameText = document.createElement('p');
+            gameText.textContent = game.name;
+            
+            gameDiv.appendChild(gameImg);
+            gameDiv.appendChild(gameText);
+            gamesContainer.appendChild(gameDiv);
         });
     </script>
 </body>

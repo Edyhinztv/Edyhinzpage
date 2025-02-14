@@ -6,11 +6,18 @@
     <title>EdyhinzGames</title>
     <style>
         body {
-            background-color: #ff4d4d;
+            background: linear-gradient(270deg, #ff4d4d, #cc0000);
+            background-size: 400% 400%;
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
+            animation: gradientAnimation 10s ease infinite;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         h1 {
             font-size: 3em;
@@ -32,6 +39,7 @@
             font-weight: bold;
             width: 200px;
             text-align: center;
+            cursor: pointer;
         }
         iframe {
             width: 100%;
@@ -44,22 +52,32 @@
 <body>
     <h1>EdyhinzGames</h1>
     <p>Juegos desbloqueados para jugar en línea.</p>
-    <div class="game-list">
-        <a class="game-item" href="#game1" onclick="showGame('game1')">Juego 1</a>
-        <a class="game-item" href="#game2" onclick="showGame('game2')">Juego 2</a>
-        <a class="game-item" href="#game3" onclick="showGame('game3')">Juego 3</a>
-    </div>
+    <div class="game-list" id="gamesContainer"></div>
     <iframe id="gameFrame"></iframe>
     
     <script>
+        const games = {
+            'game1': 'data:text/html,<html><body><h2>Juego 1</h2><p>Diviértete aquí</p></body></html>',
+            'game2': 'data:text/html,<html><body><h2>Juego 2</h2><p>Más diversión aquí</p></body></html>',
+            'game3': 'data:text/html,<html><body><h2>Juego 3</h2><p>Juega sin parar</p></body></html>'
+        };
+        
+        for (let i = 4; i <= 30; i++) {
+            games[`game${i}`] = `data:text/html,<html><body><h2>Juego ${i}</h2><p>Diviértete aquí</p></body></html>`;
+        }
+        
         function showGame(gameId) {
-            const games = {
-                'game1': 'data:text/html,<html><body><h2>Juego 1</h2><p>Diviértete aquí</p></body></html>',
-                'game2': 'data:text/html,<html><body><h2>Juego 2</h2><p>Más diversión aquí</p></body></html>',
-                'game3': 'data:text/html,<html><body><h2>Juego 3</h2><p>Juega sin parar</p></body></html>'
-            };
             document.getElementById('gameFrame').src = games[gameId];
         }
+        
+        const gamesContainer = document.getElementById('gamesContainer');
+        Object.keys(games).forEach(gameId => {
+            const gameLink = document.createElement('a');
+            gameLink.className = 'game-item';
+            gameLink.textContent = gameId.replace('game', 'Juego ');
+            gameLink.onclick = () => showGame(gameId);
+            gamesContainer.appendChild(gameLink);
+        });
     </script>
 </body>
 </html>
